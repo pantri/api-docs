@@ -222,7 +222,29 @@
         <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
           <li>
-            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+            <a href="#want-to-build-on-pantri" class="toc-h1 toc-link" data-title="Want to build on Pantri?">Want to build on Pantri?</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#4-spheres" class="toc-h2 toc-link" data-title="4 Spheres">4 Spheres</a>
+                  </li>
+                  <li>
+                    <a href="#sphere-collections" class="toc-h2 toc-link" data-title="Sphere Collections">Sphere Collections</a>
+                  </li>
+                  <li>
+                    <a href="#a-few-examples" class="toc-h2 toc-link" data-title="A Few Examples">A Few Examples</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#device-2-ways" class="toc-h1 toc-link" data-title="DEVICE: 2 Ways">DEVICE: 2 Ways</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#1-re-ordering-a-specific-item" class="toc-h2 toc-link" data-title="1. Re-ordering A Specific Item">1. Re-ordering A Specific Item</a>
+                  </li>
+                  <li>
+                    <a href="#2-altering-the-inventory-level-of-a-specific-item" class="toc-h2 toc-link" data-title="2. Altering The Inventory Level Of A Specific Item">2. Altering The Inventory Level Of A Specific Item</a>
+                  </li>
+              </ul>
           </li>
       </ul>
         <ul class="toc-footer">
@@ -233,10 +255,145 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Pantri API.</p>
+        <h1 id='want-to-build-on-pantri'>Want to build on Pantri?</h1>
+<p>We&#39;re working to open our API to anyone who wants to build on it, without needing to enter a partnership.</p>
 
-<p>Content coming soon...</p>
+<p>We want to enable self organised integration for everyone from a maker with an IoT fruitbowl, to an international grocer.</p>
+
+<p>Here&#39;s what you can expect: a simple, clean API using RESTful principles, modern identity and access control infrastructure, and a lean, mean 5 minute install to get a device or application up and running - FAST!</p>
+<h2 id='4-spheres'>4 Spheres</h2>
+<p>From a design perspective, the API operates within 3 functionality spheres, with an overarching Pantri ID to handle all user specific content robustly and independently.</p>
+
+<p><img src="images/Fig0.png" alt="NOT LOADED - Fig. 0" /></p>
+<h2 id='sphere-collections'>Sphere Collections</h2>
+<p>The API can be best considered as a group of collections within these spheres, that can each independently be used as required for your specific use case.</p>
+
+<p><strong>ID</strong></p>
+
+<ul>
+<li>Personal Data</li>
+<li>Delivery Address Data</li>
+<li>Payment Details Data</li>
+</ul>
+
+<p><strong>Device</strong></p>
+
+<ul>
+<li>Activity Reporting
+
+<ul>
+<li>alter inventory action</li>
+<li>Place an order action</li>
+</ul></li>
+</ul>
+
+<p><strong>UI</strong></p>
+
+<ul>
+<li>Device Configuration</li>
+<li>Product</li>
+<li>Inventory</li>
+<li>Rules / Subscriptions</li>
+<li>Orders</li>
+<li>History</li>
+</ul>
+
+<p><strong>Fulfilment</strong></p>
+
+<ul>
+<li>Retailer Inventory (Price, Product)</li>
+<li>Dispatch Data</li>
+<li>Delivery Completion Data</li>
+</ul>
+<h2 id='a-few-examples'>A Few Examples</h2><h3 id='a-smart-fridge'>A Smart Fridge</h3>
+<p>Will principally report usage of items - such as 45% milk carton remaining, butter removed and not returned within 5 hours, etc.  This data can be used to track inventory - with a specific report either altering inventory levels (as with Milk for example), or in the case of the butter - a binary reorder instruction.</p>
+
+<p><strong>A Smart Fridge With A Screen</strong></p>
+
+<p>If a smart fridge has a screen, then it could have a native Powered by Pantri application, that would also link into the identity and UI API&#39;s.</p>
+<h3 id='an-app'>An App</h3>
+<p>Acts as the dashboard to configure all or part of the Pantri service.  Perhaps its an app to go with a Pantri Connected Device - which would limit the functionality to the devices and products relevant to the brand, or it&#39;s a retailers online shopping portal - that links any device exclusively to their own retail endpoints.</p>
+
+<p>In either case, the UI sphere enables he platforms to configure the platform, from configuring a users device to track and amend inventory, place orders, and look up account history.</p>
+<h3 id='a-retailer-fulfiller'>A Retailer / Fulfiller</h3>
+<p>Finally, a retailer transacting orders from Pantri needs to connect to Pantri in a certain manner.  It needs to share information about the products it stocks, recieve orders, and inform the user via Pantri that they&#39;ve dispatched the item and it has subsequently been delivered (to update inventory where it is tracked).</p>
+<h1 id='device-2-ways'>DEVICE: 2 Ways</h1>
+<p>Our API and the way your device interacts with it can be generally boiled down into 2 use cases:</p>
+
+<ol>
+<li><p>You want to trigger the re-ordering of a specific item</p></li>
+<li><p>You want to alter the inventory level of a specific item that you are tracking the use of, relying on a low level trigger point that the user sets to re-order the specific item.</p></li>
+</ol>
+
+<p>Below, we have explained how each use-case would interact with the API.</p>
+<h2 id='1-re-ordering-a-specific-item'>1. Re-ordering A Specific Item</h2>
+<blockquote>
+<p>For an app or device where the user can login through the Pantri ID server:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># POST from a user</span>
+curl <span class="s2">"https://api.pantri.net/???"</span>
+  -H <span class="s2">"Device_Key: device_id"</span>
+  -H <span class="s2">"Instruction_Ref: 679866150"</span>
+
+<span class="c">#POST from a app</span>
+curl <span class="s2">"https://api.pantri.net/???"</span>
+  -H <span class="s2">"User_Auth: user_token_from_id_server"</span>
+  -H <span class="s2">"Instruction_Ref: 147478858"</span>
+</code></pre>
+<blockquote>
+<p>Returns the following:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">[</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">Success</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"CommandRef"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">739546323</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Done"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="err">//</span><span class="w"> </span><span class="err">Error</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"CommandRef"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">816844099</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Didn't do - reason"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<p>This is the simplest use-case.  The device or app simply needs to place an order on demand.  Here are some example use-cases:</p>
+
+<ul>
+<li><p>An IoT button, where a press needs to action the re-ordering of an item.</p></li>
+<li><p>A detergent doser in a dishwasher or washing machine that has a low level sensor which when triggered needs to re-order a pre-defined item.</p></li>
+</ul>
+
+<p>The application or device needs to perform a simple action to complete this process:</p>
+<h3 id='setup'>Setup</h3>
+<p>During the setup of the instruction between device or application with the pantri user account, the <strong>quantity to re-order of a specific product from a specific retailer</strong> is defined.</p>
+
+<p><img src="images/Fig1.png" alt="NOT LOADED - Fig. 1" /></p>
+
+<p>Once paired, the device or app can call the API to trigger the function.</p>
+
+<p><a href="#">See another section to learn how to set up these device/app order triggers.</a></p>
+<h3 id='post-setup-trigger'>Post Setup Trigger</h3>
+<p>Each time the device or app wants to place an order, the following flow takes place:</p>
+
+<p><img src="images/Fig2.png" alt="NOT LOADED - Fig. 2" /></p>
+<h2 id='2-altering-the-inventory-level-of-a-specific-item'>2. Altering The Inventory Level Of A Specific Item</h2>
+<p>Adding more complexity - we often use items incrementally.  Lots of these items need to be re-ordered before we completely run out.  Some example use-cases:</p>
+
+<ul>
+<li><p>A storage jar that can read the stored quantity for the item that it stores.  The user defines at what level they want the item to be re-ordered.</p></li>
+<li><p>A dishwasher that runs a cycle, each time using a dishwasher tablet and therefore removing it from a known quantity of inventory.  Again, the user defines at what level they want the system to re-order a pre-defined item.</p></li>
+</ul>
+
+<p>If you&#39;re like us, you like the occasional cookie.  You don&#39;t eat the whole pack in one go (or at least not that often)!  So, if you are using a smart cookie jar, you want it to keep track of how many cookies you have left.  Re-ordering some more when you drop down to the last 5... or maybe you need to place that order when theres 10 left!</p>
+<h3 id='setup-2'>Setup</h3>
+<p>Setting up inventory tracking is similar to <a href="?shell#1-re-ordering-a-specific-item">re-ordering a specific item</a> above.</p>
+
+<p><img src="images/Fig3.png" alt="NOT LOADED - Fig. 3" /></p>
+
+<p><img src="images/Fig4.png" alt="NOT LOADED - Fig. 4" /></p>
 
       </div>
       <div class="dark-box">
