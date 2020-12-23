@@ -348,38 +348,7 @@
 
 <p>Below, we have explained how each use-case would interact with the API.</p>
 <h2 id='1-re-ordering-a-specific-item'>1. Re-ordering A Specific Item</h2>
-<blockquote>
-<p>For an app or device where the user can login through the Pantri ID server:</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code><span class="c"># POST from a user</span>
-curl <span class="s2">"https://api.pantri.net/???"</span>
-  -H <span class="s2">"Device_Key: device_id"</span>
-  -H <span class="s2">"Instruction_Ref: 679866150"</span>
 
-<span class="c">#POST from a app</span>
-curl <span class="s2">"https://api.pantri.net/???"</span>
-  -H <span class="s2">"User_Auth: user_token_from_id_server"</span>
-  -H <span class="s2">"Instruction_Ref: 147478858"</span>
-</code></pre>
-<blockquote>
-<p>Returns the following:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="w">
-</span><span class="p">[</span><span class="w">
-  </span><span class="err">//</span><span class="w"> </span><span class="err">Success</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"CommandRef"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">739546323</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Done"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-  </span><span class="err">//</span><span class="w"> </span><span class="err">Error</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"CommandRef"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">816844099</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"ID"</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Didn't do - reason"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
 <p>This is the simplest use-case.  The device or app simply needs to place an order on demand.  Here are some example use-cases:</p>
 
 <ul>
@@ -395,7 +364,49 @@ curl <span class="s2">"https://api.pantri.net/???"</span>
 
 <p>Once paired, the device or app can call the API to trigger the function.</p>
 
-<p><a href="#">Coming Soon - learn how to set up these device/app order triggers.</a></p>
+
+
+<blockquote>
+  <p>SINGLE POST</p>
+  </blockquote>
+  <pre class="highlight shell tab-shell">
+    <code>
+      <span class="c">The following submission to the API:</span>
+
+      curl <span class="s2">"mac_address=D5:6E:FB:B7:B8:C5"</span> [Device Mac Address]
+      -H <span class="s2">"device_id=tYV249c8NA8u"</span> [Device ID supplied by the Powered by Pantri app the device is configured in]
+      -H <span class="s2">"secret=my name is tom"</span> [Set up by the Powered by Pantri app the device is configured in]
+  
+    </code>
+  </pre>
+  <blockquote>
+  <p>Returns the following:</p>
+  </blockquote>
+  <pre class="highlight json tab-json"><code><span class="w">
+  </span><span class="p">[</span><span class="w">
+
+    </span><span class="err">//</span><span class="w"> </span><span class="err">Success</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">201</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Done"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+    </span><span class="err">//</span><span class="w"> </span><span class="err">Error - Not All Fields Supplied</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Error"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Please ensure that you are submitting mac_address, device_id and secret fields in your POST submission."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+    </span><span class="err">//</span><span class="w"> </span><span class="err">Error - Incorrect Details In Submission</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"Status"</span><span class="p">:</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Error"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"MAC Address, Device ID or Secret Key do not match the details set up in the application.  Please check and try again."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+      
+  </span><span class="p">]</span><span class="w">
+  </span></code></pre>
+
+
 <h3 id='post-setup-trigger'>Post Setup Trigger</h3>
 <p>Each time the device or app wants to place an order, the following flow takes place:</p>
 
